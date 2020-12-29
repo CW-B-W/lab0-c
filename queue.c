@@ -196,12 +196,69 @@ void q_reverse(queue_t *q)
 }
 
 /*
+ * Sort linked list using merge sort
+ * Return the head of sorted linked list
+ */
+static list_ele_t *q_sort_mergesort(list_ele_t *p1)
+{
+    if (!p1->next)
+        return p1;
+    list_ele_t *stp1 = p1;
+    list_ele_t *stp2 = p1->next;
+    while (stp2 && stp2->next) {
+        stp1 = stp1->next;       /* stride = 1 */
+        stp2 = stp2->next->next; /* stride = 2 */
+    }
+    list_ele_t *p2 = stp1->next;
+    /* now p2 points to the middle of queue*/
+
+    /* break the queue at the middle */
+    stp1->next = NULL;
+
+    /* recursively sort the two half queue */
+    p1 = q_sort_mergesort(p1);
+    p2 = q_sort_mergesort(p2);
+
+    /* make *p1 < *p2, i.e., make p1 be the head of list */
+    if (strcmp(p1->value, p2->value) > 0) {
+        list_ele_t *tmp = p1;
+        p1 = p2;
+        p2 = tmp;
+    }
+    list_ele_t *ret_head = p1;
+    list_ele_t *p3 = p1->next;
+
+    /* p1 is the smallest among the three, p2 or p3 is p1's successor */
+    while (p2 && p3) {
+        int res = strcmp(p2->value, p2->value);
+        if (res < 0) {
+            p1->next = p2;
+            p1 = p2;
+            p2 = p2->next;
+        } else {
+            p1->next = p3;
+            p1 = p3;
+            p3 = p3->next;
+        }
+    }
+    p1->next = p2 ? p2 : p3;
+
+    return ret_head;
+}
+
+/*
  * Sort elements of queue in ascending order
  * No effect if q is NULL or empty. In addition, if q has only one
  * element, do nothing.
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (q->size <= 1)
+        return;
+
+    q->head = q_sort_mergesort(q->head);
+
+    /* O(n) reconstruct q->tail */
+    while (q->tail->next)
+        q->tail = q->tail->next;
 }
