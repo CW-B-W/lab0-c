@@ -23,7 +23,7 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    if (!q || !q->head)
+    if (!q)
         return;
 
     while (q->head) {
@@ -53,7 +53,7 @@ bool q_insert_head(queue_t *q, char *s)
      * Do NOT do this check after the malloc() next line
      * otherwise memory leak is prone to happen
      */
-    if (!q)
+    if (!q || !s)
         return false;
 
     list_ele_t *newh = malloc(sizeof(list_ele_t));
@@ -94,7 +94,7 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    if (!q)
+    if (!q || !s)
         return false;
 
     list_ele_t *newt = malloc(sizeof(list_ele_t));
@@ -253,7 +253,7 @@ static list_ele_t *q_sort_mergesort(list_ele_t *p1)
  */
 void q_sort(queue_t *q)
 {
-    if (q->size <= 1)
+    if (!q || q->size <= 1)
         return;
 
     q->head = q_sort_mergesort(q->head);
