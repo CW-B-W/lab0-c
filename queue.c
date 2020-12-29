@@ -23,7 +23,7 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    if (!q)
+    if (!q || !q->head)
         return;
 
     while (q->head) {
@@ -230,7 +230,7 @@ static list_ele_t *q_sort_mergesort(list_ele_t *p1)
 
     /* p1 is the smallest among the three, p2 or p3 is p1's successor */
     while (p2 && p3) {
-        int res = strcmp(p2->value, p2->value);
+        int res = strcmp(p2->value, p3->value);
         if (res < 0) {
             p1->next = p2;
             p1 = p2;
