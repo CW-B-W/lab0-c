@@ -49,8 +49,6 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    list_ele_t *newh;
-
     /*
      * Do NOT do this check after the malloc() next line
      * otherwise memory leak is prone to happen
@@ -58,12 +56,15 @@ bool q_insert_head(queue_t *q, char *s)
     if (!q)
         return false;
 
-    newh = malloc(sizeof(list_ele_t));
+    list_ele_t *newh = malloc(sizeof(list_ele_t));
     if (!newh)
         return false;
     newh->next = NULL;
     newh->value = NULL;
 
+    /*
+     * Extra 1 byte for '\0'
+     */
     size_t copy_size = (sizeof(char) * strlen(s)) + (sizeof(char) * 1);
     newh->value = (char *) malloc(copy_size);
     if (!newh->value) {
@@ -93,9 +94,35 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    /* TODO: You need to write the complete code for this function */
-    /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (!q)
+        return false;
+
+    list_ele_t *newt = malloc(sizeof(list_ele_t));
+    if (!newt)
+        return false;
+    newt->next = NULL;
+    newt->value = NULL;
+
+    /*
+     * Extra 1 byte for '\0'
+     */
+    size_t copy_size = (sizeof(char) * strlen(s)) + (sizeof(char) * 1);
+    newt->value = (char *) malloc(copy_size);
+    if (!newt->value) {
+        /* Failed to construct newt, free it! */
+        free(newt);
+        return false;
+    }
+    memcpy(newt->value, s, copy_size);
+
+    /* if queue is empty */
+    if (!q->tail) {
+        q->head = q->tail = newt;
+    } else {
+        q->tail->next = newt;
+        q->tail = newt;
+    }
+    q->size += 1;
     return false;
 }
 
