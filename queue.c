@@ -60,7 +60,7 @@ bool q_insert_head(queue_t *q, char *s)
     newh->value = NULL;
 
     size_t copy_size = (sizeof(char) * strlen(s)) + (sizeof(char) * 1);
-    new->value = (char *) malloc(copy_size);
+    newh->value = (char *) malloc(copy_size);
     if (!newh->value) {
         /* Failed to construct newh, free it! */
         free(newh);
