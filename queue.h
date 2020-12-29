@@ -25,11 +25,11 @@ typedef struct ELE {
 /* Queue structure */
 typedef struct {
     list_ele_t *head; /* Linked list of elements */
-    size_t      size; /* Indicating the size of this queue. For achieving O(1) q_size() */
-    /* TODO: You will need to add more fields to this structure
-     *        to efficiently implement q_size and q_insert_tail.
-     */
-    /* TODO: Remove the above comment when you are about to implement. */
+    list_ele_t *
+        tail; /* points to the tail element, if q_size=1, it means head=tail. */
+
+    size_t size; /* Indicating the size of this queue. For achieving O(1)
+                    q_size() */
 } queue_t;
 
 /* Operations on queue */
