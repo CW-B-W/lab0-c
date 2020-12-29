@@ -29,6 +29,11 @@ void q_free(queue_t *q)
     while (q->head) {
         list_ele_t *rm_node = q->head;
         q->head = q->head->next;
+        /*
+         * rm_node->value is allocated by q_insert_head()
+         * or q_insert_tail(), so q_free is responsible for
+         * freeing it
+         */
         free(rm_node->value);
         free(rm_node);
     }
